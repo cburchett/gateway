@@ -255,6 +255,8 @@ func (r *StorageVirtualMachineReconciler) reconcilePeerUpdate(ctx context.Contex
 		upsertSvmPeer.LocalSvm.Name = svmCR.Spec.SvmName
 		upsertSvmPeer.Peer.Cluster.Name = svmCR.Spec.PeerConfig.Name
 		upsertSvmPeer.Peer.Svm.Name = svmCR.Spec.PeerConfig.Remote.Svmname
+		upsertSvmPeer.Name = svmCR.Spec.PeerConfig.Name + "-" + svmCR.Spec.PeerConfig.Remote.Svmname
+
 
 		jsonPayload, err := json.Marshal(upsertSvmPeer)
 		if err != nil {
@@ -264,9 +266,9 @@ func (r *StorageVirtualMachineReconciler) reconcilePeerUpdate(ctx context.Contex
 			return err
 		}
 
-		//if oc.Debug {
-		log.Info("[DEBUG] SVM Peer creation payload: " + fmt.Sprintf("%#v\n", upsertSvmPeer))
-		//}
+		if oc.Debug {
+			log.Info("[DEBUG] SVM Peer creation payload: " + fmt.Sprintf("%#v\n", upsertSvmPeer))
+		}
 
 		err = oc.CreateSvmPeer(jsonPayload)
 		if err != nil {

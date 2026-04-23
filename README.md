@@ -4,7 +4,7 @@ A simple Kubernetes operator that creates, configures, and deletes NetApp ONTAP 
 ## Description
 This operator uses Red Hat's [Operator-SDK](https://sdk.operatorframework.io) to scaffold a controller that manages an Storage Virtual Machines (SVMs) resources in an NetApp ONTAP cluster. 
 
-The current version of the operator is v1beta3.  V1beta3 uses Operator-SDK 1.39.1 and updated go dependencies to avoid critical warnings.  
+The current version of the operator is v1beta3-18.  V1beta3-18 uses Operator-SDK 1.39.1 and updated go dependencies to avoid critical warnings.  
 
 The operator creates and updates:
 * an SVM, 
@@ -23,7 +23,7 @@ When the custom resource (CR) is delete, the operator uses a finalizer (called g
 ### 1. Install a version of the operator: 
 
 ```
-kubectl create -f https://raw.githubusercontent.com/NetApp-Learning-Services/gateway/main/config/deploy/v1beta3/gatewayoperator.yaml
+kubectl create -f https://raw.githubusercontent.com/NetApp-Learning-Services/gateway/main/config/deploy/v1beta3-18/gatewayoperator.yaml
 ```
 
 ### 2. Create a secret for the ONTAP cluster administrator's credentials:
@@ -191,6 +191,8 @@ In the peer section, cluster and SVM peering can be configured.  There should be
 
 For example StorageVirtualMachine kind manifests of two clusters, two SVMs peer relationship, please see:  [Cluster1-svmsrc](notes/testCR-cluster1.yaml) and [Cluster2-svmdst](notes/testCR-cluster2.yaml).
 
+Added SVM peer name because ONTAP 9.18.1 requires the field in v1beta3-18 branch.
+
 ### 5. Deploy NetApp [Trident](https://github.com/NetApp/trident) to manage the SVM resources created by this operator.
 
 ## Contributing
@@ -202,6 +204,6 @@ This project aims to follow the Kubernetes [Operator pattern](https://kubernetes
 It uses [Controllers](https://kubernetes.io/docs/concepts/architecture/controller/) which provides a reconcile function responsible for synchronizing resources until the desired state is reached on the cluster. 
 
 ## License
-Copyright 2025.
+Copyright 2026.
 
 Creative Commons Legal Code, CC0 1.0 Universal
