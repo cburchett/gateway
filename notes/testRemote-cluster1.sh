@@ -20,7 +20,8 @@ sshpass -p Netapp1! ssh -o StrictHostKeyChecking=no root@192.168.0.63 "ctr -n k8
 echo "192.168.0.64 "
 sshpass -p Netapp1! ssh -o StrictHostKeyChecking=no root@192.168.0.64 "ctr -n k8s.io i rm docker.io/curtisab/gateway:$VERSION"
 
-make docker-build docker-push
+#make docker-build docker-push
+make docker-build
 make deploy
 # kubectl -n gateway-system create secret docker-registry myreg --docker-server=https://docker-registry:30001 --docker-username=admin --docker-password=Netapp1!
 # kubectl -n gateway-system patch sa gateway-controller-manager -p '{\"imagePullSecrets\": [{\"name\": \"myreg\"}]}'

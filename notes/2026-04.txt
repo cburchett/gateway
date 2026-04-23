@@ -1,6 +1,6 @@
 0. Setup environment:
 
-snap install kubectl --channel=1.29/stable --classic
+snap install kubectl --channel=1.35/stable --classic
 code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 git repo: https://github.com/NetApp-Learning-Services/gateway
 notes/setup/kubeconfigSetup.sh
@@ -21,8 +21,8 @@ Check the current go version:  sudo apt list --installed | grep golang
 Purge current go version:  sudo apt-get purge golang*
 
 export PATH=$PATH:/usr/local/go/bin
-wget https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz
-sudo tar -C /usr/local/ -xzf go1.23.6.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.24.13.linux-amd64.tar.gz
+sudo tar -C /usr/local/ -xzf go1.24.13.linux-amd64.tar.gz
 export GO111MODULE=on
 
 check go: go env
@@ -50,7 +50,7 @@ go get -u ./...
  golang.org/x/net v0.48.0
  golang.org/x/oauth2 v0.34.0
 
-6. Fixed Peering name issue
+6. Fixed SVM peering name issue
 
 7. docker login
 
