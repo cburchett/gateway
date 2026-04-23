@@ -1,7 +1,7 @@
 /*
-Copyright 2024.
+Copyright 2026.
 Created by Curtis Burchett
-Version: v1beta2
+Version: v1beta3-18
 */
 
 package controller
