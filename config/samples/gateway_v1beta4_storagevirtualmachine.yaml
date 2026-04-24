@@ -1,0 +1,9 @@
+apiVersion: gateway.netapp.com/v1beta4
+kind: StorageVirtualMachine
+metadata:
+  labels:
+    app.kubernetes.io/name: gateway
+    app.kubernetes.io/managed-by: kustomize
+  name: storagevirtualmachine-sample
+spec:
+  # TODO(user): Add fields here

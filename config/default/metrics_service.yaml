@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     control-plane: controller-manager
-    app.kubernetes.io/name: test
+    app.kubernetes.io/name: gateway
     app.kubernetes.io/managed-by: kustomize
   name: operator-metrics-service
   namespace: system

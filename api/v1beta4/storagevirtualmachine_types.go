@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1beta3
+package v1beta4
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -108,6 +108,7 @@ type StorageVirtualMachineStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=storagevirtualmachines,shortName=svm
+// +kubebuilder:storageversion
 // StorageVirtualMachine is the Schema for the storagevirtualmachines API
 type StorageVirtualMachine struct {
 	metav1.TypeMeta   `json:",inline"`

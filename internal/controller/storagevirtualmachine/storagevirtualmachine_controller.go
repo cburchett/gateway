@@ -17,10 +17,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
 const (
@@ -261,11 +259,24 @@ func (r *StorageVirtualMachineReconciler) Reconcile(ctx context.Context, req ctr
 }
 
 // SetupWithManager sets up the controller with the Manager.
-// Adding predicate to prevent hotlooping when the status conditions are updated
-// From this: https://github.com/kubernetes-sigs/kubebuilder/issues/618
+// The whole idea is to be watching the resources that matter for the controller.
+// When a resource that the controller is interested in changes, the Watch triggers
+// the controller’s reconciliation loop, ensuring that the actual state of the resource
+// matches the desired state as defined in the controller’s logic.
+//
+// Notice how we configured the Manager to monitor events such as the creation, update,
+// or deletion of a Custom Resource (CR) of the StorageVirtualMachine kind, as well as any changes
+// to the Deployment that the controller manages and owns.
 
 func (r *StorageVirtualMachineReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&gateway.StorageVirtualMachine{}, builder.WithPredicates(predicate.GenerationChangedPredicate{})).
+		// Watch the StorageVirtualMachine CR(s) and trigger reconciliation whenever it
+		// is created, updated, or deleted
+		For(&gateway.StorageVirtualMachine{}).
+		Named("storagevirtualmachine").
+		// Watch the Deployment managed by the StorageVirtualMachineReconciler. If any changes occur to the Deployment
+		// owned and managed by this controller, it will trigger reconciliation, ensuring that the cluster
+		// state aligns with the desired state. See that the ownerRef was set when the Deployment was created.
+		//Owns(&v1beta4.StorageVirtualMachine{}).
 		Complete(r)
 }

@@ -1,0 +1,69 @@
+0. Setup environment:
+
+snap install kubectl --channel=1.35/stable --classic
+code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
+git repo: https://github.com/NetApp-Learning-Services/gateway
+notes/setup/kubeconfigSetup.sh
+notes/setup/deleteMirror.sh
+
+if you need to edit yamls: export KUBE_EDITOR='code --wait'
+
+1. Install docker: notes/setup/addDocker.sh 
+
+sudo apt update
+sudo apt install docker.io
+sudo usermod -aG docker $USER
+newgrp docker
+
+2. Install Go: notes/setup/addGo.sh
+
+Check the current go version:  sudo apt list --installed | grep golang
+Purge current go version:  sudo apt-get purge golang*
+
+export PATH=$PATH:/usr/local/go/bin
+wget https://dl.google.com/go/go1.24.13.linux-amd64.tar.gz
+sudo tar -C /usr/local/ -xzf go1.24.13.linux-amd64.tar.gz
+export GO111MODULE=on
+
+check go: go env
+check go version: go version
+
+3. Install Operator-SDK:  notes/setup/addOperatorSDK.sh
+
+export ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n arm64 ;; *) echo -n $(uname -m) ;; esac)
+export OS=$(uname | awk '{print tolower($0)}')
+export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.42.2
+curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_${OS}_${ARCH}
+chmod +x operator-sdk_${OS}_${ARCH} && sudo mv operator-sdk_${OS}_${ARCH} /usr/local/bin/operator-sdk
+
+check: operator-sdk version
+
+
+4. To update go dependiences recursively:  
+
+go mod tidy
+go get -u ./...
+
+5. updated go.mods
+
+6. Created api/v1beta4: operator-sdk create api --group gateway --version v1beta4 --kind StorageVirtualMachine --resource and then by copying v1beta3 and renaming
+
+7. Removed kubebuilder:storageversion from v1beta3 storagevirtualmachine_types.go
+
+6. Migrated to Operator SDK 1.40.0:  https://v1-42-x.sdk.operatorframework.io/docs/upgrading-sdk-version/v1.40.0/
+   Migrated to Operator SDK 1.41.0:  https://v1-42-x.sdk.operatorframework.io/docs/upgrading-sdk-version/v1.41.0/
+   
+7. docker login
+
+8. Ran make generate and make manifests
+
+9. TESTING:  
+Update code, Run notes/testRemote-cluster1.sh, review logs, repeat
+To test peering, execute notes/testRemote-cluster1.sh and then execute notes/testRemote-cluster2.sh
+
+10. Everything working - generating install manifest:  kubectl kustomize config/default > config/deploy/v1beta4/gatewayoperator.yaml
+
+11. Updating docker hub latest:  
+
+docker image tag curtisab/gateway:v1beta4 curtisab/gateway:latest
+docker image push curtisab/gateway:latest
