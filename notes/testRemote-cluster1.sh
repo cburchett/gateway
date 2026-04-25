@@ -1,6 +1,6 @@
 #!/bin/bash
 # A simple bash script to reset and test the application
-VERSION=v1beta3
+VERSION=v1beta4
 
 kubectl config use-context source-admin@source
 kubectl -n gateway-system delete svm svmsrc

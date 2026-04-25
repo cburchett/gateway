@@ -1,6 +1,6 @@
 #!/bin/bash
 # A simple bash script to reset and test the application for peering
-VERSION=v1beta3
+VERSION=v1beta4
 
 kubectl config use-context destination-admin@destination
 kubectl -n gateway-system delete svm svmdst

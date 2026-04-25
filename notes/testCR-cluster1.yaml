@@ -18,7 +18,7 @@ stringData:
   username: vsadmin
   password: Netapp1!
 ---
-apiVersion: gateway.netapp.com/v1beta3
+apiVersion: gateway.netapp.com/v1beta4
 kind: StorageVirtualMachine
 metadata:
   name: svmsrc
